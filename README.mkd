@@ -1,0 +1,12 @@
+# yuml
+
+This is an unofficial command line client for the [yUML](http://yuml.me) web
+app. Use it to draw class diagrams, activity diagrams and usecase diagrams
+from the command line, integrate yUML into your documentation workflow or what
+have you.
+
+`yuml` (the tool) supports all the styles and formats that yUML (the service)
+does, so you can take your pick between *scruffy* (the default), *boring* and
+*plain* for the styles and *png*, *pdf* or *jpg* for the format.
+
+Have fun.
