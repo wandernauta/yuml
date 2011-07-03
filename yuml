@@ -29,40 +29,52 @@ class Request():
             self.body = [x.strip() for x in codecs.open(f, 'r', 'utf-8').readlines()]
         else:
             raise IOError(u"File %s not found" % f)
+        self.log(u'Loading done')
     
     def prepout(self):
-        self.out = open(self.opts.outfile, 'w')
+        if self.opts.outfile:
+            self.out = open(self.opts.outfile, 'w')
+        else:
+            print "Usage: yuml [-i FILE] -o FILE"
+            sys.exit(1)
     
     def run(self):
         start = time.time()
         
+        if not self.out:
+            self.prepout()        
+        
         if not self.body:
             self.loadbody()
-        
-        if not self.out:
-            self.prepout()
         
         opts = self.opts.style + (";scale:" + str(self.opts.scale) if self.opts.scale else '')
         url = u"%s/%s/%s/%s.%s" % (self.API_BASE, opts, self.opts.type, urllib.quote(u', '.join(self.body).encode('utf8')), self.opts.fmt)
         
         self.log(u'Requesting %s' % url)
         
-        response = urllib2.urlopen(url).read()
-        self.out.write(response)
+        try:
+            response = urllib2.urlopen(url).read()
+        except urllib2.HTTPError, e:
+            if e.code == 500:
+                print "[yuml] Service returned 500: probably malformed input."
+                sys.exit(1)
+            else:
+                raise
         
+        self.out.write(response)
         self.log(u'Done after %f seconds' % (time.time() - start))
 
 if __name__ == '__main__':
-    parser = OptionParser(usage="%prog [-i FILE] -o FILE", version="%prog 0.1")
-    parser.add_option("-i", "--in", dest="infile", help="read yuml from FILE instead of stdin", metavar="FILE", default="-")
-    parser.add_option("-o", "--out", dest="outfile", help="store output in FILE", metavar="FILE")
-    parser.add_option("-f", "--format", dest="fmt", help="force format FMT", metavar="FMT", default="png", choices=['png', 'pdf', 'jpg'])
-    parser.add_option("-t", "--type", dest="type", help="draw a TYPE diagram", metavar="TYPE", default="class", choices=['class', 'activity', 'usecase'])
-    parser.add_option("-s", "--style", dest="style", help="use style STY", metavar="STY", default="scruffy", choices=['scruffy', 'boring', 'plain'])
-    parser.add_option("--scale", dest="scale", help="scale output to percentage", metavar="PERCENT", type="int")
-    parser.add_option("-v", "--verbose", dest="v", help="print some debug info", action="store_true", default=False)
+    op = OptionParser(usage="%prog [-i FILE] -o FILE", version="%prog 0.1")
+    op.add_option("-i", "--in", dest="infile", help="read yuml from FILE instead of stdin", metavar="FILE", default="-")
+    op.add_option("-o", "--out", dest="outfile", help="store output in FILE", metavar="FILE")
+    op.add_option("-f", "--format", dest="fmt", help="force format FMT", metavar="FMT", default="png", choices=['png', 'pdf', 'jpg'])
+    op.add_option("-t", "--type", dest="type", help="draw a TYPE diagram", metavar="TYPE", default="class", choices=['class', 'activity', 'usecase'])
+    op.add_option("-s", "--style", dest="style", help="use style STY", metavar="STY", default="scruffy", choices=['scruffy', 'boring', 'plain'])
+    op.add_option("--scale", dest="scale", help="scale output to percentage", metavar="PERCENT", type="int")
+    op.add_option("-v", "--verbose", dest="v", help="print some debug info", action="store_true", default=False)
 
-    (options, args) = parser.parse_args()
+    (options, args) = op.parse_args()
     
     r = Request()
     r.opts = options
