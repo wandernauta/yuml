@@ -22,3 +22,7 @@ Only the -o option is required.
 -s Use this diagram style (one of `scruffy`, `boring`, `plain`)
 --scale Scale output to percentage
 -v Print some debug info
+
+## Example
+
+    echo "[This]-[That]" | ./yuml -s boring -o diagram.png
