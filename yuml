@@ -9,6 +9,7 @@ import os, sys
 import time
 
 class Request():
+    "Represents a single request to the yUML web service."
     opts = None
     body = u""
     out = None
@@ -16,10 +17,12 @@ class Request():
     API_BASE = u"http://yuml.me/diagram"
     
     def log(self, msg):
+        "Optionally log an informative message."
         if self.opts.v:
             print u"[yuml]", msg
     
     def loadbody(self):
+        "Load the yUML text from stdin or a file."
         f = self.opts.infile
         self.log(u'Reading from %s' % ('stdin' if f == '-' else f))
         if f == '-':
@@ -31,6 +34,7 @@ class Request():
         self.log(u'Done reading.')
     
     def prepout(self):
+        "Open the output file."
         if self.opts.outfile:
             self.out = open(self.opts.outfile, 'w')
         else:
@@ -38,6 +42,7 @@ class Request():
             sys.exit(1)
     
     def run(self):
+        "Execute the request."
         start = time.time()
         
         if not self.out:
