@@ -36,7 +36,7 @@ class Request():
     def prepout(self):
         "Open the output file."
         if self.opts.outfile:
-            self.out = open(self.opts.outfile, 'w')
+            self.out = open(self.opts.outfile, 'wb')
         else:
             print "Usage: yuml [-i FILE] -o FILE"
             sys.exit(1)
