@@ -72,7 +72,7 @@ if __name__ == '__main__':
     op = OptionParser(usage="%prog [-i FILE] -o FILE", version="%prog 0.1")
     op.add_option("-i", "--in", dest="infile", help="read yuml from FILE instead of stdin", metavar="FILE", default="-")
     op.add_option("-o", "--out", dest="outfile", help="store output in FILE", metavar="FILE")
-    op.add_option("-f", "--format", dest="fmt", help="force format FMT", metavar="FMT", default="png", choices=['png', 'pdf', 'jpg'])
+    op.add_option("-f", "--format", dest="fmt", help="force format FMT", metavar="FMT", default="png", choices=['png', 'pdf', 'jpg', 'svg'])
     op.add_option("-t", "--type", dest="type", help="draw a TYPE diagram", metavar="TYPE", default="class", choices=['class', 'activity', 'usecase'])
     op.add_option("-s", "--style", dest="style", help="use style STY", metavar="STY", default="scruffy", choices=['scruffy', 'boring', 'plain'])
     op.add_option("--scale", dest="scale", help="scale output to percentage", metavar="PERCENT", type="int")
