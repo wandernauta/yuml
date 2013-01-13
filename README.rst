@@ -1,0 +1,32 @@
+====
+yuml
+====
+
+This is an unofficial command line client for the `yUML <http://yuml.me>`_ web
+app. Use it to draw class diagrams, activity diagrams and usecase diagrams
+from the command line, integrate yUML into your documentation workflow or what
+have you.
+
+``yuml`` (the tool) supports all the styles and formats that yUML (the service)
+does, so you can take your pick between *scruffy* (the default), *boring* and
+*plain* for the styles and *png*, *pdf* or *jpg* for the format.
+
+Have fun.
+
+Options
+-------
+
+Only the -o option is required.
+
+-i      Read yuml from ``FILE`` instead of stdin  
+-o      Store output in ``FILE``  
+-f      Force format (one of ``png``, ``pdf``, or ``jpg``)  
+-t      Use this diagram type (one of ``class``, ``activity``, or ``usecase``)  
+-s      Use this diagram style (one of ``scruffy``, ``boring``, ``plain``)  
+--scale Scale output to percentage  
+-v      Print some debug info
+
+Example
+-------
+
+    echo "[This]-[That]" | ./yuml -s boring -o diagram.png
