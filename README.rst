@@ -9,7 +9,7 @@ have you.
 
 ``yuml`` (the tool) supports all the styles and formats that yUML (the service)
 does, so you can take your pick between *scruffy* (the default), *boring* and
-*plain* for the styles and *png*, *pdf* or *jpg* for the format.
+*plain* for the styles and *png*, *pdf*, *svg* or *jpg* for the format.
 
 Have fun.
 
@@ -20,7 +20,7 @@ Only the -o option is required.
 
 -i       Read yuml from ``FILE`` instead of stdin  
 -o       Store output in ``FILE``  
--f       Force format (one of ``png``, ``pdf``, or ``jpg``)  
+-f       Use specified format (one of ``png``, ``pdf``, ``svg``, or ``jpg``)  
 -t       Use this diagram type (one of ``class``, ``activity``, or ``usecase``)  
 -s       Use this diagram style (one of ``scruffy``, ``boring``, ``plain``)  
 --scale  Scale output to percentage  
