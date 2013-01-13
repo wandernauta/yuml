@@ -18,13 +18,13 @@ Options
 
 Only the -o option is required.
 
--i      Read yuml from ``FILE`` instead of stdin  
--o      Store output in ``FILE``  
--f      Force format (one of ``png``, ``pdf``, or ``jpg``)  
--t      Use this diagram type (one of ``class``, ``activity``, or ``usecase``)  
--s      Use this diagram style (one of ``scruffy``, ``boring``, ``plain``)  
---scale Scale output to percentage  
--v      Print some debug info
+-i       Read yuml from ``FILE`` instead of stdin  
+-o       Store output in ``FILE``  
+-f       Force format (one of ``png``, ``pdf``, or ``jpg``)  
+-t       Use this diagram type (one of ``class``, ``activity``, or ``usecase``)  
+-s       Use this diagram style (one of ``scruffy``, ``boring``, ``plain``)  
+--scale  Scale output to percentage  
+-v       Print some debug info
 
 Example
 -------
