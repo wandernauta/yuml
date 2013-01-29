@@ -13,14 +13,14 @@ class Request():
     opts = None
     body = u""
     out = None
-    
+
     API_BASE = u"http://yuml.me/diagram"
-    
+
     def log(self, msg):
         "Optionally log an informative message."
         if self.opts.v:
             print u"[yuml]", msg
-    
+
     def loadbody(self):
         "Load the yUML text from stdin or a file."
         f = self.opts.infile
@@ -32,7 +32,7 @@ class Request():
         else:
             raise IOError(u"File %s not found" % f)
         self.log(u'Done reading.')
-    
+
     def prepout(self):
         "Open the output file."
         if self.opts.outfile:
@@ -40,31 +40,49 @@ class Request():
         else:
             print "Usage: yuml [-i FILE] -o FILE"
             sys.exit(1)
-    
+
     def run(self):
         "Execute the request."
         start = time.time()
-        
+
         if not self.out:
-            self.prepout()        
-        
+            self.prepout()
+
         if not self.body:
             self.loadbody()
-        
+
         opts = self.opts.style + (";scale:" + str(self.opts.scale) if self.opts.scale else '')
-        url = u"%s/%s/%s/%s.%s" % (self.API_BASE, opts, self.opts.type, urllib.quote(u', '.join(self.body).encode('utf8')), self.opts.fmt)
-        
+        url = u"%s/%s/%s/" % (self.API_BASE, opts, self.opts.type)
+        data = {'dsl_text' : u', '.join(self.body).encode('utf8') + '.' + self.opts.fmt}
+        values = urllib.urlencode(data)
+        headers = {
+            'User-Agent' : 'wandernauta/yuml v0.1',
+            'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+        }
+
+        self.log('Data: %s' % values)
         self.log('Requesting %s' % url)
-        
+
         try:
-            response = urllib2.urlopen(url).read()
+            req = urllib2.Request(url, values, headers)
+            img_name = urllib2.urlopen(req).read()
+
+            self.log('Got image name %s' % img_name)
+
+            img_arr = img_name.partition('.')
+            img_url = url + img_arr[0] + '.' + self.opts.fmt
+
+            self.log('Requesting %s' % img_url)
+
+            req = urllib2.Request(img_url, None, headers)
+            response = urllib2.urlopen(req).read()
         except urllib2.HTTPError, e:
             if e.code == 500:
                 print "[yuml] Service returned 500: probably malformed input."
                 sys.exit(1)
             else:
                 raise
-        
+
         self.out.write(response)
         self.log('Done after %f seconds' % (time.time() - start))
 
@@ -79,7 +97,7 @@ if __name__ == '__main__':
     op.add_option("-v", "--verbose", dest="v", help="print some debug info", action="store_true", default=False)
 
     (options, args) = op.parse_args()
-    
+
     r = Request()
     r.opts = options
     r.run()
