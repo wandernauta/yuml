@@ -49,9 +49,13 @@ class Request():
             self.prepout()
 
         if not self.body:
-            self.loadbody()
-
-        opts = self.opts.style + (";scale:" + str(self.opts.scale) if self.opts.scale else '') + (";dir:" + str(self.opts.dir) if self.opts.dir else '')
+            self.loadbody()            
+            
+        style = self.opts.style
+        if style == 'boring':
+            style = 'nofunky;'
+        
+        opts = style + (";scale:" + str(self.opts.scale) if self.opts.scale else '') + (";dir:" + str(self.opts.dir) if self.opts.dir else '')
         url = u"%s/%s/%s/" % (self.API_BASE, opts, self.opts.type)
         data = {'dsl_text' : u', '.join(self.body).encode('utf8') + '.' + self.opts.fmt}
         values = urllib.urlencode(data)
