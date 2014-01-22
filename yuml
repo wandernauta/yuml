@@ -28,7 +28,7 @@ class Request():
         if f == '-':
             self.body = [x.decode('utf8') for x in sys.stdin.readlines()]
         elif os.path.exists(f):
-            self.body = [x.strip() for x in codecs.open(f, 'r', 'utf-8').readlines()]
+            self.body = [x.strip() for x in codecs.open(f, 'r', 'utf-8').readlines() if x.strip()]
         else:
             raise IOError(u"File %s not found" % f)
         self.log(u'Done reading.')
