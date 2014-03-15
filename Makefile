@@ -1,4 +1,6 @@
+PYTHON?=/usr/bin/env python
+
 all:
-	./yuml -v -i test.yuml -o /tmp/yumltest.png
+	$(PYTHON) ./yuml -v -i test.yuml -o /tmp/yumltest.png
 
 .PHONY: all
