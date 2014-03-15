@@ -2,13 +2,27 @@
 # -*- coding: utf-8 -*-
 
 """
-This is an unofficial command line client for the `yUML <http://yuml.me>`_ web
+This is an unofficial command line client for the yUML <http://yuml.me> web
 app. Use it to draw class diagrams, activity diagrams and usecase diagrams
 from the command line, integrate yUML into your documentation workflow or what
 have you.
 
-Copyright (c) 2012, 2013, 2014 Wander Nauta
-yuml is distributed under the terms of the ISC license. See COPYING.rst.
+Copyright (c) 2012, 2013, 2014 Wander Nauta.
+yuml is distributed under the terms of the ISC license.
+
+***
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+The software is provided "as is" and the author disclaims all warranties with
+regard to this software including all implied warranties of merchantability and
+fitness. In no event shall the author be liable for any special, direct,
+indirect, or consequential damages or any damages whatsoever resulting from
+loss of use, data or profits, whether in an action of contract, negligence or
+other tortious action, arising out of or in connection with the use or
+performance of this software.
 """
 
 from optparse import OptionParser
@@ -88,12 +102,16 @@ class YumlRequest(object):
         if self.opts.scale:
             opts += ";scale:" + str(self.opts.scale)
 
+        if self.opts.dir:
+            opts += ";dir:" + str(self.opts.dir)
+
         url = "%s/%s/%s/" % (self.API_BASE, opts, self.opts.type)
 
         dsl_text = (', '.join(self.body) + '.' + self.opts.fmt)
         data = {'dsl_text':  dsl_text.encode('utf-8')}
 
         values = urlencode(data).encode('utf-8')
+
         headers = {
             'User-Agent': 'wandernauta/yuml v0.1',
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -140,11 +158,13 @@ if __name__ == '__main__':
                   choices=['class', 'activity', 'usecase'],
                   help="draw a TYPE diagram")
     op.add_option("-s", "--style", dest="style", metavar="STY",
-                  choices=['scruffy', 'boring', 'plain'],
+                  choices=['scruffy', 'nofunky', 'plain'],
                   help="use style STY")
 
     op.add_option("--scale", dest="scale", metavar="PERCENT", type="int",
                   help="scale output to percentage")
+    op.add_option("--dir", dest="dir", choices=['LR', 'RL', 'TD'],
+                  help="direction of the diagram LR RL TD")
 
     op.add_option("-v", "--verbose", dest="v", action="store_true",
                   help="print some debug info")

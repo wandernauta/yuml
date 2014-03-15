@@ -22,7 +22,7 @@ Only the -o option is required.
 -o       Store output in ``FILE``  
 -f       Use specified format (one of ``png``, ``pdf``, ``svg``, or ``jpg``)  
 -t       Use this diagram type (one of ``class``, ``activity``, or ``usecase``)  
--s       Use this diagram style (one of ``scruffy``, ``boring``, ``plain``)  
+-s       Use this diagram style (one of ``scruffy``, ``nofunky``, ``plain``)
 --scale  Scale output to percentage  
 -v       Print some debug info
 
@@ -30,3 +30,18 @@ Example
 -------
 
     echo "[This]-[That]" | ./yuml -s boring -o diagram.png
+
+Installation
+------------
+
+To install ``yuml``, try:
+
+    sudo pip install https://github.com/wandernauta/yuml/zipball/master
+    
+...or the equivalent for your system.
+
+License
+-------
+
+``yuml`` is distributed under the terms of the ISC license. See the COPYING.rst 
+file for more details.
