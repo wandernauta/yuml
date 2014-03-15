@@ -1,6 +1,7 @@
 # This is a test for the unofficial yuml command line tool.
 [Class]
 [Directional]->[Class]
+
 [Bidirectional]<->[Class]
 [Aggregation]+-[Thing]
 [Composition]++-[Thing]

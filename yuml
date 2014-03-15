@@ -66,16 +66,16 @@ class YumlRequest(object):
 
     def loadbody(self):
         """Load the yUML text from stdin or a file."""
-        f = self.opts.infile
-        self.log('Reading from %s' % ('stdin' if f == '-' else f))
+        infile = self.opts.infile
+        self.log('Reading from %s' % ('stdin' if infile == '-' else infile))
 
-        if f == '-':
+        if infile == '-':
             self.body = sys.stdin.readlines()
-        elif os.path.exists(f):
-            lines = codecs.open(f, 'r', 'utf-8').readlines()
+        elif os.path.exists(infile):
+            lines = codecs.open(infile, 'r', 'utf-8').readlines()
             self.body = [x.strip() for x in lines if x.strip()]
         else:
-            raise IOError("File %s not found" % f)
+            raise IOError("File %s not found" % infile)
 
         self.log('Done reading.')
 
@@ -133,8 +133,8 @@ class YumlRequest(object):
 
             req = Request(img_url, None, headers)
             response = urlopen(req).read()
-        except HTTPError as e:
-            if e.code == 500:
+        except HTTPError as exception:
+            if exception.code == 500:
                 self.log("Service returned 500: probably malformed input.")
                 sys.exit(1)
             else:
@@ -143,36 +143,42 @@ class YumlRequest(object):
         self.out.write(response)
         self.log('Done after %f seconds' % (time.time() - start))
 
-if __name__ == '__main__':
-    op = OptionParser(usage="%prog [-i FILE] -o FILE", version="%prog 0.1")
 
-    op.add_option("-i", "--in", dest="infile", metavar="FILE", default="-",
-                  help="read yuml from FILE instead of stdin")
-    op.add_option("-o", "--out", dest="outfile", metavar="FILE",
-                  help="store output in FILE")
+def main():
+    """Entry point for the command-line tool."""
 
-    op.add_option("-f", "--format", dest="fmt", metavar="FMT",
-                  choices=['png', 'pdf', 'jpg', 'svg'],
-                  help="use format FMT")
-    op.add_option("-t", "--type", dest="type", metavar="TYPE",
-                  choices=['class', 'activity', 'usecase'],
-                  help="draw a TYPE diagram")
-    op.add_option("-s", "--style", dest="style", metavar="STY",
-                  choices=['scruffy', 'nofunky', 'plain'],
-                  help="use style STY")
+    parser = OptionParser(usage="%prog [-i FILE] -o FILE", version="%prog 0.1")
 
-    op.add_option("--scale", dest="scale", metavar="PERCENT", type="int",
-                  help="scale output to percentage")
-    op.add_option("--dir", dest="dir", choices=['LR', 'RL', 'TD'],
-                  help="direction of the diagram LR RL TD")
+    parser.add_option("-i", "--in", dest="infile", metavar="FILE", default="-",
+                      help="read yuml from FILE instead of stdin")
+    parser.add_option("-o", "--out", dest="outfile", metavar="FILE",
+                      help="store output in FILE")
 
-    op.add_option("-v", "--verbose", dest="v", action="store_true",
-                  help="print some debug info")
+    parser.add_option("-f", "--format", dest="fmt", metavar="FMT",
+                      choices=['png', 'pdf', 'jpg', 'svg'],
+                      help="use format FMT")
+    parser.add_option("-t", "--type", dest="type", metavar="TYPE",
+                      choices=['class', 'activity', 'usecase'],
+                      help="draw a TYPE diagram")
+    parser.add_option("-s", "--style", dest="style", metavar="STY",
+                      choices=['scruffy', 'nofunky', 'plain'],
+                      help="use style STY")
 
-    op.set_defaults(v=False, fmt="png", type="class", style="scruffy")
+    parser.add_option("--scale", dest="scale", metavar="PERCENT", type="int",
+                      help="scale output to percentage")
+    parser.add_option("--dir", dest="dir", choices=['LR', 'RL', 'TD'],
+                      help="direction of the diagram LR RL TD")
 
-    (options, args) = op.parse_args()
+    parser.add_option("-v", "--verbose", dest="v", action="store_true",
+                      help="print some debug info")
 
-    r = YumlRequest()
-    r.opts = options
-    r.run()
+    parser.set_defaults(v=False, fmt="png", type="class", style="scruffy")
+
+    (options, _) = parser.parse_args()
+
+    request = YumlRequest()
+    request.opts = options
+    request.run()
+
+if __name__ == "__main__":
+    main()
