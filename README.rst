@@ -29,7 +29,7 @@ Only the -o option is required.
 Example
 -------
 
-    echo "[This]-[That]" | ./yuml -s boring -o diagram.png
+    echo "[This]-[That]" | ./yuml -s nofunky -o diagram.png
 
 Installation
 ------------
