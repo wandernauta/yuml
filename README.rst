@@ -2,7 +2,7 @@
 yuml
 ====
 
-.. image:: https://travis-ci.org/wandernauta/yuml.png?branch=master   :target: https://travis-ci.org/wandernauta/yuml
+.. image:: https://travis-ci.org/wandernauta/yuml.png?branch=master
 
 This is an unofficial command line client for the `yUML <http://yuml.me>`_ web
 app. Use it to draw class diagrams, activity diagrams and usecase diagrams
