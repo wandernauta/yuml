@@ -7,7 +7,8 @@ setup(
     author_email='info@wandernauta.nl',
     version='0.1',
     scripts=['yuml'],
-    url='http://github.com/wandernauta/yuml/',
+    url='https://github.com/wandernauta/yuml/',
+    download_url = 'https://github.com/wandernauta/yuml/tarball/master',
     license='COPYING',
     long_description=open('README.rst').read(),
 
