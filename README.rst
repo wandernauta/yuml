@@ -25,6 +25,7 @@ Only the -o option is required.
 -f       Use specified format (one of ``png``, ``pdf``, ``svg``, or ``jpg``)  
 -t       Use this diagram type (one of ``class``, ``activity``, or ``usecase``)  
 -s       Use this diagram style (one of ``scruffy``, ``nofunky``, ``plain``)
+--dir    Lay out elements in this direction (one of ``LR``, ``RL``, ``TD``)
 --scale  Scale output to percentage  
 -v       Print some debug info
 
