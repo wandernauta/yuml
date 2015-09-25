@@ -10,7 +10,7 @@ from the command line, integrate yUML into your documentation workflow or what
 have you.
 
 ``yuml`` (the tool) supports all the styles and formats that yUML (the service)
-does, so you can take your pick between *scruffy* (the default), *boring* and
+does, so you can take your pick between *scruffy* (the default), *nofunky* and
 *plain* for the styles and *png*, *pdf*, *svg* or *jpg* for the format.
 
 Have fun.
