@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -39,11 +39,17 @@ if sys.version_info >= (3, 0):
     from urllib.request import urlopen, Request, HTTPError
     # noinspection PyUnresolvedReferences, PyCompatibility
     from urllib.parse import urlencode
+
+    def decode(s):
+        return s
 else:
     # noinspection PyUnresolvedReferences, PyCompatibility
     from urllib import urlencode
     # noinspection PyUnresolvedReferences, PyCompatibility
     from urllib2 import urlopen, Request, HTTPError
+
+    def decode(b):
+        return b.decode('utf-8')
 # </monkey>
 
 
@@ -70,13 +76,13 @@ class YumlRequest(object):
         self.log('Reading from %s' % ('stdin' if infile == '-' else infile))
 
         if infile == '-':
-            self.body = sys.stdin.readlines()
+            source = decode(sys.stdin.read())
         elif os.path.exists(infile):
-            lines = codecs.open(infile, 'r', 'utf-8').readlines()
-            self.body = [x.strip() for x in lines if x.strip()]
+            source = decode(open(infile, 'r').read())
         else:
             raise IOError("File %s not found" % infile)
 
+        self.body = [x.strip() for x in source.splitlines() if x.strip()]
         self.log('Done reading.')
 
     def prepout(self):
