@@ -38,13 +38,13 @@ if sys.version_info >= (3, 0):
     # noinspection PyUnresolvedReferences, PyCompatibility
     from urllib.request import urlopen, Request, HTTPError
     # noinspection PyUnresolvedReferences, PyCompatibility
-    from urllib.parse import urlencode
+    from urllib.parse import quote_plus
 
     def decode(s):
         return s
 else:
     # noinspection PyUnresolvedReferences, PyCompatibility
-    from urllib import urlencode
+    from urllib import quote_plus
     # noinspection PyUnresolvedReferences, PyCompatibility
     from urllib2 import urlopen, Request, HTTPError
 
@@ -111,43 +111,23 @@ class YumlRequest(object):
         if self.opts.dir:
             opts += ";dir:" + str(self.opts.dir)
 
-        url = "%s/%s/%s/" % (self.API_BASE, opts, self.opts.type)
+        dsl_text = ', '.join(self.body).encode('utf-8')
+        url = "%s/%s/%s/%s.%s" % (self.API_BASE, opts, self.opts.type, quote_plus(dsl_text), self.opts.fmt)
 
-        dsl_text = (', '.join(self.body) + '.' + self.opts.fmt)
-        data = {'dsl_text':  dsl_text.encode('utf-8')}
-
-        values = urlencode(data).encode('utf-8')
-
-        headers = {
-            'User-Agent': 'wandernauta/yuml v0.1',
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-
-        self.log('Data: %s' % values)
         self.log('Requesting %s' % url)
 
         try:
-            req = Request(url, values, headers)
-            img_name = urlopen(req).read().decode('utf-8')
-
-            self.log('Got image name %s' % img_name)
-
-            img_arr = img_name.partition('.')
-            img_url = url + img_arr[0] + '.' + self.opts.fmt
-
-            self.log('Requesting %s' % img_url)
-
-            req = Request(img_url, None, headers)
+            req = Request(url, headers={'User-Agent': 'wandernauta/yuml v0.2'})
             response = urlopen(req).read()
+
+            self.out.write(response)
+            self.log('Done after %f seconds' % (time.time() - start))
         except HTTPError as exception:
             if exception.code == 500:
                 self.log("Service returned 500: probably malformed input.")
                 sys.exit(1)
             else:
                 raise
-
-        self.out.write(response)
-        self.log('Done after %f seconds' % (time.time() - start))
 
 
 def main():

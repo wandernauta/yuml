@@ -5,7 +5,7 @@ setup(
     description='A command-line client for the yUML service',
     author='Wander Nauta',
     author_email='info@wandernauta.nl',
-    version='0.1',
+    version='0.2',
     scripts=['yuml'],
     url='https://github.com/wandernauta/yuml/',
     download_url = 'https://github.com/wandernauta/yuml/tarball/master',
