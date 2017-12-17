@@ -38,13 +38,13 @@ if sys.version_info >= (3, 0):
     # noinspection PyUnresolvedReferences, PyCompatibility
     from urllib.request import urlopen, Request, HTTPError
     # noinspection PyUnresolvedReferences, PyCompatibility
-    from urllib.parse import quote_plus
+    from urllib.parse import quote
 
     def decode(s):
         return s
 else:
     # noinspection PyUnresolvedReferences, PyCompatibility
-    from urllib import quote_plus
+    from urllib import quote
     # noinspection PyUnresolvedReferences, PyCompatibility
     from urllib2 import urlopen, Request, HTTPError
 
@@ -112,7 +112,7 @@ class YumlRequest(object):
             opts += ";dir:" + str(self.opts.dir)
 
         dsl_text = ', '.join(self.body).encode('utf-8')
-        url = "%s/%s/%s/%s.%s" % (self.API_BASE, opts, self.opts.type, quote_plus(dsl_text), self.opts.fmt)
+        url = "%s/%s/%s/%s.%s" % (self.API_BASE, opts, self.opts.type, quote(dsl_text), self.opts.fmt)
 
         self.log('Requesting %s' % url)
 
